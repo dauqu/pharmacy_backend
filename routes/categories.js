@@ -1,0 +1,79 @@
+const express = require("express");
+const router = express.Router();
+
+const mssql = require("mssql");
+const config = require("./../config/db");
+
+//Get all categories
+router.get("/", async (req, res) => {
+  try {
+    const pool = await mssql.connect(config);
+    const result = await pool.request().query(`SELECT * FROM ItemCategory`);
+    if (result.recordset.length === 0) {
+      res.status(400).send("Number not registered");
+    } else {
+      res.send(result.recordset);
+    }
+  } catch (err) {
+    res.status(500).send("Server error");
+  }
+});
+
+//Add new Item
+router.get("/add", async (req, res) => {
+  try {
+    const pool = await mssql.connect(config);
+    const result = await pool
+      .request()
+      .query(
+        `INSERT INTO ItemCategory (cCategory, nBranchId, nActive) VALUES ('test', 1, 1)`
+      );
+
+    return res.send(result.rowsAffected);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+//Middleware
+async function Validate(req, res, next) {
+  //Check all fields are filled
+  if (
+    req.body.cCategory === undefined ||
+    req.body.cCategory === "" ||
+    req.body.cCategory === null
+  ) {
+    return res.status(400).send("Please fill all fields");
+  }
+
+  //Check if category already exists
+  const pool = await mssql.connect(config);
+  const result = await pool
+    .request()
+    .query(
+      `SELECT * FROM ItemCategory WHERE (cCategory = '${req.body.cCategory}')`
+    );
+  if (result.recordset.length > 0) {
+    return res.status(400).send("Category already exists");
+  }
+  next();
+}
+
+//Delete category by id
+router.delete("/:id", async (req, res) => {
+  try {
+    const pool = await mssql.connect(config);
+    const result = await pool
+      .request()
+      .query(`DELETE FROM ItemCategory WHERE (nCode = ${req.params.id})`);
+    if (result.rowsAffected.length === 0) {
+      res.status(400).send("Number not registered");
+    } else {
+      res.send(result.rowsAffected);
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+module.exports = router;
