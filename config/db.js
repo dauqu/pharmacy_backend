@@ -28,6 +28,4 @@ const connectDB = async () => {
   }
 };
 
-//Add new Item
-
 module.exports = connectDB;
