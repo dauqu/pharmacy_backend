@@ -101,12 +101,12 @@ router.post("/", async (req, res) => {
         .input("warehouse_info", mssql.VarChar, warehouse_info)
         .input("delivery_info", mssql.VarChar, delivery_info)
         .query(
-            "INSERT INTO Supplier VALUES (@description, @short_from, @alias_code, @address, @emails,"
+            "INSERT INTO Supplier (description, short_from, alias_code, address, emails, mobile_no, reference_code, is_active, website_im_detail, owner_info, trade_license, trade_license_expiry_date, payment_type, credit_days, credit_limit, payment_terms, warehouse_info, delivery_info) VALUES (@description, @short_from, @alias_code, @address, @emails, @mobile_no, @reference_code, @is_active, @website_im_detail, @owner_info, @trade_license, @trade_license_expiry_date, @payment_type, @credit_days, @credit_limit, @payment_terms, @warehouse_info, @delivery_info)"
         );
-        res.json(promotion.recordset);
+        res.send("Supplier created");
     } catch (err) {
         console.error(err);
-        res.status(500).send("Server error");
+        res.status(500).send(err);
     }
 });
 
