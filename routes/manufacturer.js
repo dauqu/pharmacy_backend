@@ -43,37 +43,37 @@ router.get("/create-table", async (req, res) => {
 
 //Create promotion
 router.post("/", async (req, res) => {
-  const {
-    description,
-    short_from,
-    alias_code,
-    address,
-    emails,
-    mobile_no,
-    reference_code,
-    is_active,
-  } = req.body;
-
-  try {
-    let pool = await mssql.connect(config);
-    let promotion = await pool
-      .request()
-      .input("description", mssql.VarChar, description)
-      .input("short_from", mssql.VarChar, short_from)
-      .input("alias_code", mssql.VarChar, alias_code)
-      .input("address", mssql.VarChar, address)
-      .input("emails", mssql.VarChar, emails)
-      .input("mobile_no", mssql.VarChar, mobile_no)
-      .input("reference_code", mssql.VarChar, reference_code)
-      .input("is_active", mssql.Bit, is_active)
-      .query(
-        "INSERT INTO Manufacturer (description, short_from, alias_code, address, emails, mobile_no, reference_code, is_active) VALUES (@description, @short_from, @alias_code, @address, @emails, @mobile_no, @reference_code)"
-      );
-    res.json(promotion.recordset);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Server error");
-  }
+    const {
+        description,
+        short_from,
+        alias_code,
+        address,
+        emails,
+        mobile_no,
+        reference_code,
+        is_active,
+    } = req.body;
+    
+    try {
+        let pool = await mssql.connect(config);
+        let promotion = await pool
+        .request()
+        .input("description", mssql.VarChar, description)
+        .input("short_from", mssql.VarChar, short_from)
+        .input("alias_code", mssql.VarChar, alias_code)
+        .input("address", mssql.VarChar, address)
+        .input("emails", mssql.VarChar, emails)
+        .input("mobile_no", mssql.VarChar, mobile_no)
+        .input("reference_code", mssql.VarChar, reference_code)
+        .input("is_active", mssql.Bit, is_active)
+        .query(
+            "INSERT INTO Manufacturer (description, short_from, alias_code, address, emails, mobile_no, reference_code, is_active) VALUES (@description, @short_from, @alias_code, @address, @emails, @mobile_no, @reference_code, @is_active)"
+        );
+        res.json(promotion.recordset);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Server error");
+    }
 });
 
 //Delete promotion

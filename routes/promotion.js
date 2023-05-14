@@ -72,11 +72,11 @@ router.post("/", async (req, res) => {
       .input("offer_product", mssql.VarChar, offer_product)
       .input("scheme_qty", mssql.Int, scheme_qty)
       .input("scheme_discount", mssql.Decimal, scheme_discount)
-      .query(
+      .query( 
         "INSERT INTO Promotion (promotion_code, description, date, remarks, offer_from, offer_to, scheme_type, offer_product, scheme_qty, scheme_discount) VALUES (@promotion_code, @description, @date, @remarks, @offer_from, @offer_to, @scheme_type, @offer_product, @scheme_qty, @scheme_discount)"
       );
 
-    res.json(promotion.recordset);
+    res.json(promotion.recordset); 
   } catch (err) {
     console.error(err);
     res.status(500).send("Server error");
