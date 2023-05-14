@@ -21,21 +21,7 @@ router.get("/", async (req, res) => {
 });
 
 //Get all categories
-router.get("/add", async (req, res) => {
-  // product_id INT IDENTITY(1,1) PRIMARY KEY,
-  // product_code VARCHAR(50) NOT NULL,
-  // name VARCHAR(100) NOT NULL,
-  // stock INT NOT NULL,
-  // expiry DATE NOT NULL,
-  // vat_per DECIMAL(5,2) NOT NULL,
-  // main_group VARCHAR(50) NOT NULL,
-  // generic_name VARCHAR(100) NOT NULL,
-  // company VARCHAR(100) NOT NULL,
-  // supplier VARCHAR(100) NOT NULL,
-  // p_rate DECIMAL(10,2) NOT NULL,
-  // s_rate DECIMAL(10,2) NOT NULL,
-  // margin DECIMAL(5,2) NOT NULL,
-  // manufacturer_code VARCHAR(50) NOT NULL
+router.post("/", async (req, res) => {
   try {
     const pool = await mssql.connect(config);
 
@@ -46,9 +32,9 @@ router.get("/add", async (req, res) => {
       );
 
     if (result.rowsAffected[0] === 0) {
-      res.status(400).send("Number not registered");
+     res.send("Number not registered");
     } else {
-      res.send(result.rowsAffected[0]);
+      res.send("Number registered successfully!");
     }
   } catch (err) {
     res.status(500).send(err.message);

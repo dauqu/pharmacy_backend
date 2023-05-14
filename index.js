@@ -7,7 +7,7 @@ connectDB();
 
 app.use(express.json({ extended: false }));
 
-CreateProduct();
+// CreateProduct();
 
 app.get('/', (req, res) => {
     res.send('API Running');
