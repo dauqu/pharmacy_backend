@@ -2,13 +2,13 @@ const express = require("express");
 const router = express.Router();
 
 const mssql = require("mssql");
-const config = require("./../config/db");
+const config = require("../config/db");
 
 //Get all promotion
 router.get("/", async (req, res) => {
   try {
     let pool = await mssql.connect(config);
-    let promotion = await pool.request().query("SELECT * FROM Customer");
+    let promotion = await pool.request().query("SELECT * FROM Salesman");
     res.json(promotion.recordset);
   } catch (err) {
     console.error(err);
@@ -19,7 +19,7 @@ router.get("/", async (req, res) => {
 //Create table
 router.get("/create-table", async (req, res) => {
   const sqlPromotion = `
-    CREATE TABLE Customer (
+    CREATE TABLE Salesman (
         id INT IDENTITY(1,1) PRIMARY KEY,
         description VARCHAR(100) NOT NULL,
         short_from VARCHAR(50) NOT NULL,
@@ -28,8 +28,6 @@ router.get("/create-table", async (req, res) => {
         mobile_no VARCHAR(50) NOT NULL,
         reference_code VARCHAR(50) NOT NULL,
         is_active BIT NOT NULL,
-        calculate_vat BIT NOT NULL,
-        valid_till DATE NOT NULL,
         )`;
 
   try {
@@ -52,8 +50,6 @@ router.post("/", async (req, res) => {
         mobile_no,
         reference_code,
         is_active,
-        calculate_vat,
-        valid_till,
     } = req.body;
     
     try {
@@ -67,10 +63,8 @@ router.post("/", async (req, res) => {
         .input("mobile_no", mssql.VarChar, mobile_no)
         .input("reference_code", mssql.VarChar, reference_code)
         .input("is_active", mssql.Bit, is_active)
-        .input("calculate_vat", mssql.Bit, calculate_vat)
-        .input("valid_till", mssql.Date, valid_till)
         .query(
-            "INSERT INTO Customer (description, short_from, emirate, address, mobile_no, reference_code, is_active, calculate_vat, valid_till) VALUES (@description, @short_from, @emirate, @address, @mobile_no, @reference_code, @is_active, @calculate_vat, @valid_till)"
+            "INSERT INTO Salesman (description, short_from, emirate, address, mobile_no, reference_code, is_active) VALUES (@description, @short_from, @emirate, @address, @mobile_no, @reference_code, @is_active)"
         );
         res.json(promotion.recordset);
     } catch (err) {
@@ -86,7 +80,7 @@ router.delete("/:id", async (req, res) => {
         let promotion = await pool
         .request()
         .input("id", mssql.Int, req.params.id)
-        .query("DELETE FROM Customer WHERE id = @id");
+        .query("DELETE FROM Salesman WHERE id = @id");
         res.json(promotion.recordset);
     } catch (err) {
         console.error(err);
