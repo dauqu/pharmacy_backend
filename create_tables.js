@@ -6,8 +6,8 @@ const CreateProduct = async () => {
     const pool = await mssql.connect(config);
 
     const sqlQuery = `
-            CREATE TABLE products (
-                product_id INT IDENTITY(1,1) PRIMARY KEY,
+            CREATE TABLE Products (
+                id INT IDENTITY(1,1) PRIMARY KEY,
                 product_code VARCHAR(50) NOT NULL,
                 name VARCHAR(100) NOT NULL,
                 stock INT NOT NULL,

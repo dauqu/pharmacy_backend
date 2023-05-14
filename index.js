@@ -2,8 +2,26 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 5000;
 const connectDB = require('./config/db');
-const CreateProduct = require('./create_tables');
+// const CreateProduct = require('./create_tables');
 connectDB();
+
+//Allow cors
+const cors = require("cors");
+//Loop of allowed origins
+const allowedOrigins = [
+  "http://localhost:3001",
+  "http://localhost:3000",
+  "https://admin-for-all.vercel.app",
+  "https://dauqunews.vercel.app",
+];
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+  })
+);
+
 
 app.use(express.json({ extended: false }));
 
