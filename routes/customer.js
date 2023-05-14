@@ -43,7 +43,7 @@ router.get("/create-table", async (req, res) => {
 });
 
 //Create promotion
-router.post("/", async (req, res) => {
+router.post("/", async (req, res) => { 
     const {
         description,
         short_from,
@@ -72,10 +72,10 @@ router.post("/", async (req, res) => {
         .query(
             "INSERT INTO Customer (description, short_from, emirate, address, mobile_no, reference_code, is_active, calculate_vat, valid_till) VALUES (@description, @short_from, @emirate, @address, @mobile_no, @reference_code, @is_active, @calculate_vat, @valid_till)"
         );
-        res.json(promotion.recordset);
+        res.status(200).send("Customer added");
     } catch (err) {
         console.error(err);
-        res.status(500).send("Server error");
+        res.status(500).send(err);
     }
 });
 

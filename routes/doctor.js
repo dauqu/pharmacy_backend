@@ -66,7 +66,7 @@ router.post("/", async (req, res) => {
         .query(
             "INSERT INTO Doctor (description, short_from, emirate, address, mobile_no, reference_code, is_active) VALUES (@description, @short_from, @emirate, @address, @mobile_no, @reference_code, @is_active)"
         );
-        res.json(promotion.recordset);
+        res.status(200).send("Doctor created");
     } catch (err) {
         console.error(err);
         res.status(500).send("Server error");
