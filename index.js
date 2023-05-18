@@ -13,7 +13,7 @@ const allowedOrigins = [
   "http://localhost:3001",
   "http://localhost:3000",
   "https://admin-for-all.vercel.app",
-  "https://dauqunews.vercel.app",
+  "https://pharmacy-hjmr.vercel.app",
 ];
 
 app.use(
