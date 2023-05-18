@@ -41,6 +41,7 @@ app.use("/api/doctor", require("./routes/doctor"));
 app.use("/api/salesman", require("./routes/salesman"));
 app.use("/api/companies", require("./routes/companies"));
 app.use("/api/group", require("./routes/group"));
+app.use("/api/chart-of-accounts", require("./routes/chart_of_accounts"));
 
 app.listen(port, () =>
   console.log(`Server started on port http://localhost:${port}`)
