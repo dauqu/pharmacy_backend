@@ -39,6 +39,7 @@ app.use("/api/supplier", require("./routes/supplier"));
 app.use("/api/customer", require("./routes/customer"));
 app.use("/api/doctor", require("./routes/doctor"));
 app.use("/api/salesman", require("./routes/salesman"));
+app.use("/api/companies", require("./routes/companies"));
 
 app.listen(port, () =>
   console.log(`Server started on port http://localhost:${port}`)
