@@ -4,7 +4,7 @@ const sql = require("mssql");
 const config = {
   user: "harshaweb",
   password: "Harsh@Singh8576",
-  database: "harshaweb",
+  database: "dauqu",
   server: "harshaweb.database.windows.net",
   options: {
     encrypt: true,

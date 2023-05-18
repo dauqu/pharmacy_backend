@@ -3,22 +3,61 @@ const router = express.Router();
 const mssql = require("mssql");
 const config = require("./../config/db");
 
-//Get all categories
-router.get("/", async (req, res) => {
-  try {
-    const pool = await mssql.connect(config);
-    //Add static Data
+// //Get all categories
+// router.get("/", async (req, res) => {
+//   try {
+//     const pool = await mssql.connect(config);
+//     //Add static Data
 
-    const result = await pool.request().query(`SELECT * FROM Products`);
+//     const result = await pool.request().query(`SELECT * FROM PRODUCTS`);
+//     if (result.recordset.length === 0) {
+//       res.status(400).send("Number not registered");
+//     } else {
+//       res.send(result.recordset);
+//     }
+//   } catch (err) {
+//     res.status(500).send(err.message);
+//   }
+// });
+
+// Get categories by page
+router.get("/:page", async (req, res) => {
+  try {
+    const { page } = req.params;
+    const pageSize = 10;
+    const pool = await mssql.connect(config);
+    const totalCountQuery = "SELECT COUNT(*) AS totalCount FROM PRODUCTS";
+    const resultCount = await pool.request().query(totalCountQuery);
+    const totalCount = resultCount.recordset[0].totalCount;
+
+    const totalPages = Math.ceil(totalCount / pageSize);
+    const currentPage = parseInt(page, 10) || 1;
+    
+    if (currentPage < 1 || currentPage > totalPages) {
+      res.status(400).send("Invalid page number");
+      return;
+    }
+
+    const offset = (currentPage - 1) * pageSize;
+    const query = `SELECT * FROM PRODUCTS ORDER BY id OFFSET ${offset} ROWS FETCH NEXT ${pageSize} ROWS ONLY`;
+
+    const result = await pool.request().query(query);
     if (result.recordset.length === 0) {
-      res.status(400).send("Number not registered");
+      res.status(404).send("No products found");
     } else {
-      res.send(result.recordset);
+      res.send({
+        products: result.recordset,
+        currentPage,
+        totalPages,
+        pageSize,
+        totalCount
+      });
     }
   } catch (err) {
     res.status(500).send(err.message);
   }
 });
+
 
 //Get all categories
 router.post("/", async (req, res) => {
