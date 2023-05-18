@@ -8,7 +8,7 @@ const config = require("./../config/db");
 router.get("/", async (req, res) => {
   try {
     let pool = await mssql.connect(config);
-    let promotion = await pool.request().query("SELECT * FROM Supplier");
+    let promotion = await pool.request().query("SELECT * FROM V_SUPPLIER");
     res.json(promotion.recordset);
   } catch (err) {
     console.error(err);
